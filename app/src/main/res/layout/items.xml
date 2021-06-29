@@ -8,10 +8,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cardView"
+        android:id="@+id/cardViewNews"
         android:layout_margin="8dp"
         app:cardElevation="6dp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="18dp"
+        android:clickable="true"
         >
     </androidx.cardview.widget.CardView>
 
@@ -19,6 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:padding="8dp">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_circular"
+            android:layout_gravity="center"/>
 
         <ImageView
             android:layout_width="match_parent"
@@ -70,14 +77,9 @@
                 android:id="@+id/tvDate"
                 android:text="Date"
                 android:textSize="16sp"
-                android:gravity="right"
+                android:gravity="bottom|right"
                 android:textColor="@color/white"
-                android:padding="8dp"
                 />
-
         </LinearLayout>
-
-
     </FrameLayout>
-
 </LinearLayout>
