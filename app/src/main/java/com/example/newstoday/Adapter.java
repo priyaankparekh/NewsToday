@@ -32,7 +32,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     Context context;
     List<Articles> articles;
 
-
     public Adapter(Context context, List<Articles> articles) {
         this.context = context;
         this.articles = articles;
@@ -54,23 +53,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         String imageUrl = a.getUrlToImage();
         String url = a.getUrl();
 
-        Picasso.get().load(imageUrl).into(holder.imageView);
+        Picasso.with(context).load(imageUrl).into(holder.imageView);
 
         holder.tvTitle.setText(a.getTitle());
         holder.tvSource.setText(a.getSource().getName());
         holder.tvDate.setText("\u2022"+dateTime(a.getPublishedAt()));
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.cardViewNews.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,DetailedView.class);
-                intent.putExtra("title",a.getTitle());
-                intent.putExtra("source",a.getSource().getName());
-                intent.putExtra("time",dateTime(a.getPublishedAt()));
-                intent.putExtra("desc",a.getDescription());
-                intent.putExtra("imageUrl",a.getUrlToImage());
-                intent.putExtra("url",a.getUrl());
-                context.startActivity(intent);
+                Intent detailedView = new Intent(context,DetailedView.class);
+                detailedView.putExtra("title",a.getTitle());
+                detailedView.putExtra("source",a.getSource().getName());
+                detailedView.putExtra("time",dateTime(a.getPublishedAt()));
+                detailedView.putExtra("description",a.getDescription());
+                detailedView.putExtra("urlToImage",a.getUrlToImage());
+                detailedView.putExtra("url",a.getUrl());
+                context.startActivity(detailedView);
             }
         });
 
@@ -84,7 +83,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle,tvSource,tvDate;
         ImageView imageView;
-        CardView cardView;
+        CardView cardViewNews;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,8 +91,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvSource = itemView.findViewById(R.id.tvSource);
             tvDate = itemView.findViewById(R.id.tvDate);
-            imageView = itemView.findViewById(R.id.image);
-            cardView = itemView.findViewById(R.id.cardView);
+            imageView = itemView.findViewById(R.id.itemsImageView);
+            cardViewNews = itemView.findViewById(R.id.cardViewNews);
 
         }
     }
@@ -110,7 +109,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             e.printStackTrace();
         }
         return time;
-
     }
 
     public String getCountry(){
@@ -118,4 +116,5 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         String country = locale.getCountry();
         return country.toLowerCase();
     }
+
 }

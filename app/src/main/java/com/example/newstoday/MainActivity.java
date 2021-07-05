@@ -7,6 +7,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.newstoday.Models.Articles;
@@ -24,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     Adapter adapter;
+
+    EditText etSearch;
+    Button btnSearch;
+
     List<Articles> articles = new ArrayList<>();
 
     SwipeRefreshLayout swipeRefreshLayout;
@@ -40,22 +47,59 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.rvHome);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        etSearch = findViewById(R.id.etSearch);
+        btnSearch = findViewById(R.id.btnSearch);
+
         String country = getCountry();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                retrieveJson(country,API_KEY);
+                retrieveJson("",country,API_KEY);
             }
         });
 
-        retrieveJson(country,API_KEY);
+        retrieveJson("",country,API_KEY);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etSearch.getText().toString().equals("")){
+                    Toast.makeText(MainActivity.this, "Please enter the search query", Toast.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            retrieveJson(etSearch.getText().toString(),country,API_KEY);
+                        }
+                    });
+
+                    retrieveJson(etSearch.getText().toString(),country,API_KEY);
+                }
+                else {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            retrieveJson(etSearch.getText().toString(),country,API_KEY);
+                        }
+                    });
+
+                    retrieveJson(etSearch.getText().toString(),country,API_KEY);
+                }
+            }
+        });
+
     }
 
-    public void retrieveJson(String country, String apiKey){
+    public void retrieveJson(String query, String country, String apiKey){
 
         swipeRefreshLayout.setRefreshing(true);
-        Call<Headlines> call = ApiClient.getInstance().getApi().getHeadlines(country,apiKey);
+        Call<Headlines> call;
+        if(!etSearch.getText().toString().equals("")){
+            call = ApiClient.getInstance().getApi().getQuery(query,apiKey);
+        }
+        else {
+            call = ApiClient.getInstance().getApi().getHeadlines(country,apiKey);
+        }
         call.enqueue(new Callback<Headlines>() {
             @Override
             public void onResponse(Call<Headlines> call, Response<Headlines> response) {

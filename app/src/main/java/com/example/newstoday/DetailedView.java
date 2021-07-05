@@ -16,7 +16,7 @@ public class DetailedView extends AppCompatActivity {
 
     TextView tvTitle,tvDate,tvSource,tvDescription;
     WebView webView;
-    ImageView imageView;
+    ImageView webImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,23 +27,23 @@ public class DetailedView extends AppCompatActivity {
         tvDate = findViewById(R.id.tvDate);
         tvSource = findViewById(R.id.tvSource);
         tvDescription = findViewById(R.id.tvDescription);
-        imageView = findViewById(R.id.imageView);
+        webImageView = findViewById(R.id.webImageView);
         webView = findViewById(R.id.webView);
 
         Intent intent = getIntent();
-        String title = intent.getStringExtra("Title");
-        String source = intent.getStringExtra("Source");
-        String date = intent.getStringExtra("Time");
-        String description = intent.getStringExtra("Description");
-        String imageUrl = intent.getStringExtra("ImageUrl");
-        String url = intent.getStringExtra("Url");
+        String title = intent.getStringExtra("title");
+        String source = intent.getStringExtra("source");
+        String date = intent.getStringExtra("time");
+        String description = intent.getStringExtra("description");
+        String imageUrl = intent.getStringExtra("urlToImage");
+        String url = intent.getStringExtra("url");
 
         tvTitle.setText(title);
         tvDate.setText(date);
         tvSource.setText(source);
         tvDescription.setText(description);
 
-        Picasso.get().load(imageUrl).into(imageView);
+        Picasso.with(DetailedView.this).load(imageUrl).into(webImageView);
 
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setJavaScriptEnabled(true);

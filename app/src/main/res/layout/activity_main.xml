@@ -47,8 +47,8 @@
             android:textColorHint="@color/grey"
             android:textColor="@color/grey"
             android:padding="8dp"
+            android:defaultFocusHighlightEnabled="false"
             android:focusableInTouchMode="true"
-            android:focusable="false"
             />
 
         <Button
